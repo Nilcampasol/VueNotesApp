@@ -2,7 +2,11 @@
 import ListNoteItem from './ListNoteItem.vue';
 import { ref } from 'vue';
 import { useNotesStore } from '../stores/storenotes';
-import CreateNoteItemDialog from './CreateNoteItemDialog.vue';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext'
+import MultiSelect from 'primevue/multiselect';
+import { FloatLabel } from 'primevue';
 
 const notesStore = useNotesStore()
 
@@ -14,6 +18,19 @@ function removeFilter() {
     notesStore.activeReminderFilter = false
 }
 
+const visible = ref(false);
+
+const selectedLabels = ref([])
+
+const labels = [
+    { name: 'Personal' },
+    { name: 'Work' },
+    { name: 'Project' },
+    { name: 'Ideas' },
+    { name: 'Team' },
+    { name: 'Update' },
+]
+
 </script>
 
 <template>
@@ -22,8 +39,35 @@ function removeFilter() {
         <div class="notes-header">
             <h2>Notes</h2>
             <div class="notes-header-divider"></div>
-            <button id="create-btn" class="create-btn">+ Create New</button>
+            <button id="create-btn" class="create-btn" @click="visible = true">+ Create New</button>
         </div>
+
+        <Dialog v-model:visible="visible" modal header="Create a New Note" :style="{ width: '25rem' }">
+            <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                <label for="title" class="font-semibold w-24">Title</label>
+                <InputText id="title" class="flex-auto" style="width: 355px" autocomplete="off" />
+            </FloatLabel>
+            <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                <label for="subtitle" class="font-semibold w-24">Subtitle</label>
+                <InputText id="subtitle" class="flex-auto" style="width: 355px" autocomplete="off" />
+            </FloatLabel>
+
+            <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                <label for="content" class="font-semibold w-24">Content</label>
+                <InputText id="content" class="flex-auto" style="width: 355px" autocomplete="off" />
+            </FloatLabel>
+
+            <div class="flex items-center gap-4 mb-4 ml-4">
+                <MultiSelect v-model="selectedLabels" :options="labels" optionLabel="name" filter
+                    placeholder="Select Labels" style="width: 355px" :maxSelectedLabels="3" class="w-full md:w-80" />
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
+                    style="margin-right: 20px"></Button>
+                <Button type="button" label="Save" @click="visible = false"></Button>
+            </div>
+        </Dialog>
 
         <!-- Container 2: Filters -->
         <div class="notes-filters">
