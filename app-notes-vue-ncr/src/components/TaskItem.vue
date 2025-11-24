@@ -24,6 +24,10 @@ function onFocusOut() {
     isActive.value = false
 }
 
+function updateLastEdited() {
+    notesStore.notes[notesStore.activeNote].last_edited = new Date();
+}
+
 </script>
 
 <template>
@@ -35,8 +39,7 @@ function onFocusOut() {
         <div class="task-row" :class="{ active: isActive }">
             <div class="task-content">
                 <div class="task-row-top">
-                    <input type="checkbox" :data-task-id="task.id" v-bind:checked="task.completed"
-                        v-model="task.completed">
+                    <input type="checkbox" :data-task-id="task.id" v-bind:checked="task.completed" v-model="task.completed" @click="updateLastEdited()">
                     <span class="task-title">{{ task.description }}</span>
                 </div>
                 <div class="task-row-bottom">

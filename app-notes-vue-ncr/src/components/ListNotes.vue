@@ -2,6 +2,7 @@
 import ListNoteItem from './ListNoteItem.vue';
 import { ref } from 'vue';
 import { useNotesStore } from '../stores/storenotes';
+import CreateNoteItemDialog from './CreateNoteItemDialog.vue';
 
 const notesStore = useNotesStore()
 
@@ -41,8 +42,10 @@ function removeFilter() {
 
         <!-- Container 3: Tabs -->
         <div class="notes-tabs">
-            <button class="tab-btn" :class="{ active: !notesStore.activeReminderFilter }" @click="removeFilter()">All</button>
-            <button class="tab-btn" :class="{ active: notesStore.activeReminderFilter }" @click="applyFilter()">Reminder</button>
+            <button class="tab-btn" :class="{ active: !notesStore.activeReminderFilter }"
+                @click="removeFilter()">All</button>
+            <button class="tab-btn" :class="{ active: notesStore.activeReminderFilter }"
+                @click="applyFilter()">Reminder</button>
         </div>
 
         <!-- Container 4: Notes List -->
