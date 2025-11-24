@@ -1,0 +1,158 @@
+:root {
+    --light-blue: #98b7ff;
+    --selected: #d7e3ff;
+    --shadow: black;
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --line: #e7eaf1;
+    --text: #20243a;
+    --muted: #6b7280;
+    --blue: #004ad3;
+    --blue-weak: #e8f0ff;
+    --rail: #f1f4fa;
+    --sel: #e9f2ff;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 8px 24px rgba(0, 0, 0, .06);
+    --radius: 12px;
+    --radius-sm: 6px;
+    --rail-width: 64px;
+}
+
+#app{
+    width: 100%;
+    height: 100%;
+}
+
+html,
+body {
+    margin: 0;
+    margin-top: 1px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+}
+
+body {
+    display: flex;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    height: 100vh;
+}
+
+.header {
+    width: calc(100% - 64px);
+}
+
+.header .bi-list {
+    font-size: 22px;
+}
+
+.main-wrapper {
+    display: flex;
+    height: 100%;
+}
+
+.upload-btn {
+    width: calc(100%-16px);
+    margin: 8px;
+    padding: 10px 0;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+.main-content2 {
+    display: flex;
+    flex-grow: 1;
+    flex: 1;
+    height: 100%;
+}
+
+
+.meta-label {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 4px;
+    background: #e0e7ff;
+    color: #2f78ff;
+}
+
+.label-personal {
+    background: #e0ffe0;
+    color: #52c41a;
+}
+
+.label-project {
+    background: #ffeee0;
+    color: #ff974d;
+}
+
+.label-work {
+    background: #ADD8E6;
+    color: #1976d2;
+}
+
+.label-ideas {
+    background: #FFD700;
+    color: #b8860b;
+}
+
+.label-team {
+    background: #FFA07A;
+    color: #d84315;
+}
+
+.label-update {
+    background: #20B2AB;
+    color: #00695c;
+}
+
+.label-more {
+    background: transparent;
+    color: #888;
+}
+
+.meta-label i.bi-tag-fill {
+    transform: scaleY(-1);
+    transform: rotate(90deg);
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.label-personal i.bi-tag-fill {
+    color: #52c41a;
+}
+
+.label-project i.bi-tag-fill {
+    color: #ff974d;
+}
+
+.label-work i.bi-tag-fill {
+    color: #1976d2;
+}
+
+.label-ideas i.bi-tag-fill {
+    color: #b8860b;
+}
+
+.label-team i.bi-tag-fill {
+    color: #d84315;
+}
+
+.label-update i.bi-tag-fill {
+    color: #00695c;
+}
+
+.label-more i.bi-tag-fill {
+    color: #888;
+}
+
