@@ -1,9 +1,17 @@
 <script setup>
 import ListNoteItem from './ListNoteItem.vue';
-
+import { ref } from 'vue';
 import { useNotesStore } from '../stores/storenotes';
 
 const notesStore = useNotesStore()
+
+function applyFilter() {
+    notesStore.activeReminderFilter = true
+}
+
+function removeFilter() {
+    notesStore.activeReminderFilter = false
+}
 
 </script>
 
@@ -33,8 +41,8 @@ const notesStore = useNotesStore()
 
         <!-- Container 3: Tabs -->
         <div class="notes-tabs">
-            <button onClick="loadNotesList()" class="tab-btn active">All</button>
-            <button onClick="loadTimerNotes()" class="tab-btn">Reminder</button>
+            <button class="tab-btn" :class="{ active: !notesStore.activeReminderFilter }" @click="removeFilter()">All</button>
+            <button class="tab-btn" :class="{ active: notesStore.activeReminderFilter }" @click="applyFilter()">Reminder</button>
         </div>
 
         <!-- Container 4: Notes List -->
@@ -46,7 +54,6 @@ const notesStore = useNotesStore()
 </template>
 
 <style scoped>
-
 .notes-list {
     display: flex;
     flex-direction: column;

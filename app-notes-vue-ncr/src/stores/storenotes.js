@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export const useNotesStore = defineStore('notes', {
     state: () => ({
         activeNote: null,
+        activeReminderFilter: false,
         notes: {
             "1": {
                 id: 1,

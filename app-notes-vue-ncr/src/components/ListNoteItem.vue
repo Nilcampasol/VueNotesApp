@@ -5,29 +5,34 @@ import { computed, watch } from 'vue';
 const notesStore = useNotesStore()
 
 const props = defineProps({
-    noteId: { type: [String, Number], required: true}
+    noteId: { type: [String, Number], required: true }
 })
 
 watch(() => props.noteId, val => console.log('noteId changed:', val));
 
 const note = computed(() => {
-  if (!props.noteId) return null;
-  const key = String(props.noteId);
-  return notesStore.notes?.[key] ?? null;
+    if (!props.noteId) return null;
+    const key = String(props.noteId);
+    return notesStore.notes?.[key] ?? null;
 });
 
-const tasksDone = computed (() => Object.values(note.value.tasks).filter(t => t.completed).length);
-const tasksNum = computed (() => Object.values(note.value.tasks).length);
-const linksNum = computed (() => Object.values(note.value.links).length);
-const shownLabel = computed (() => note.value.labels[0]);
+const showNote = computed(() => {
+  if (!note.value) return false // if note == null
+  if (!notesStore.activeReminderFilter) return true // if filter it's not active = true
+  return note.value.tasks && Object.values(note.value.tasks).some(t => t.timer) // if filter is active then = filter 
+})
+
+const tasksDone = computed(() => Object.values(note.value.tasks).filter(t => t.completed).length);
+const tasksNum = computed(() => Object.values(note.value.tasks).length);
+const linksNum = computed(() => Object.values(note.value.links).length);
+const shownLabel = computed(() => note.value.labels[0]);
 const labelsLeft = computed(() => note.value.labels.length - 1);
-const noteTime = computed (() => notesStore.setNoteTime(note.value.last_edited));
+const noteTime = computed(() => notesStore.setNoteTime(note.value.last_edited));
 
 </script>
 
 <template>
-    <div v-if="note !=null " class="note-item listener-added"
-        @click="notesStore.activeNote = note.id" :data-id="note.id">
+    <div v-if="showNote" class="note-item listener-added" @click="notesStore.activeNote = note.id" :data-id="note.id">
         <div class="note-content">
             <div class="note-title" :title="note.title">
                 {{ note.title }}
@@ -59,10 +64,10 @@ const noteTime = computed (() => notesStore.setNoteTime(note.value.last_edited))
                 <div class="-footer-divider"></div>
                 <span class="note-notebook">
                     <i class="bi bi-journal"></i>
-                     NoteBook-{{ note.id }}
+                    NoteBook-{{ note.id }}
                 </span>
                 <span v-if="note.tasks && Object.values(note.tasks).some(t => t.timer)" class="note-timer">
-                    <i class="bi bi-alarm" ></i>
+                    <i class="bi bi-alarm"></i>
                 </span>
             </div>
         </div>
@@ -71,8 +76,6 @@ const noteTime = computed (() => notesStore.setNoteTime(note.value.last_edited))
 </template>
 
 <style scoped>
-
-
 .note-item {
     display: flex;
     align-items: flex-start;

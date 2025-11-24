@@ -1,6 +1,0 @@
-fastapi
-flask
-pydantic
-sqlalchemy
-uvicorn
-pytz
