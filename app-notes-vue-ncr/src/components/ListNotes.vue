@@ -81,6 +81,11 @@ const labels = [
         />
       </div>
 
+      <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+        <label for="image" class="font-semibold w-24">Image</label>
+        <InputText id="image" class="flex-auto" fluid autocomplete="off" v-model="newImage"/>
+      </FloatLabel>
+
       <div class="flex justify-end gap-2">
         <Button
           type="button"
@@ -89,8 +94,7 @@ const labels = [
           @click="visible = false"
           style="margin-right: 20px"
         ></Button>
-        <Button type="button" label="Save" @click="visible = false, notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels)"></Button>
-        <Button type="button" label="HIDE" @click="visible = false">HIDE</Button>
+        <Button type="button" label="Save" @click="visible = false, notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels, newImage)"></Button>
       </div>
     </Dialog>
 
@@ -144,6 +148,7 @@ const labels = [
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
+  margin-bottom:20px;
   scrollbar-width: thin;
   scrollbar-color: var(--line) var(--surface);
   transition: scrollbar-color 0.3s, opacity 0.3s;

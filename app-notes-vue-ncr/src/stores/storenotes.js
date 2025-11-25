@@ -5,6 +5,7 @@ export const useNotesStore = defineStore('notes', {
     state: () => ({
         activeNote: null,
         activeReminderFilter: false,
+        deletedCount: 0,
         notes: {
             "1": {
                 id: 1,
@@ -167,10 +168,18 @@ export const useNotesStore = defineStore('notes', {
             const date = this.notes[this.activeNote].tasks[task].reminderDate;
             return format(date, "d LLL, h:mm a", { timeZone: 'Europe/Madrid' });
         },
-        newListNoteItem(newTitle, newSubtitle, newContent, newLabels){
-            const newId = (this.notesArray).length + 1;
-            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: {}, tasks: {}, img: [], last_edited: new Date() };
+        newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newImage){
+            const newId = (this.notesArray).length + this.deletedCount + 1;
+            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: {}, tasks: {}, img: [], last_edited: new Date(), img: [newImage] };
+        },
+        deleteActiveNote(){
+            if (!this.activeNote) return
+            const key = String(this.activeNote);
+            delete this.notes[key];
+            this.activeNote = null;
+            this.deletedCount++;
         }
+
     },
 },
 )

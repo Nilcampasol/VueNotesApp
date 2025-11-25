@@ -26,7 +26,7 @@ const visible = ref(false)
 <template>
     <div class="two-thirds">
         <!-- TOOLBAR 1 MAIN CONTAINER -->
-        <div class="toolbar toolbar-main">
+        <div class="toolbar toolbar-main" >
             <button id="group-excess-of-length-btn" class="toolbar-btn group-btn d-none">
                 <i class="bi bi-list"></i>
             </button>
@@ -56,9 +56,8 @@ const visible = ref(false)
                     <i class="bi bi-printer"></i>
                     Print
                 </button>
-                <button class="toolbar-btn">
-                    <i class="bi bi-trash"></i>
-                    Delete
+                <button class="toolbar-btn" @click="notesStore.deleteActiveNote()">
+                    <i class="bi bi-trash"></i>Delete 
                 </button>
             </div>
 
@@ -88,7 +87,7 @@ const visible = ref(false)
 
             </div>
             <div class="toolbar-sep"></div>
-            <button class="toolbar-btn" title="Delete">
+            <button class="toolbar-btn" title="Delete" @click="notesStore.deleteActiveNote()">
                 <i class="bi bi-trash"></i>
             </button>
             <div class="toolbar-flex"></div>
@@ -107,7 +106,7 @@ const visible = ref(false)
         </div>
 
         <!-- TOOLBAR 2 MAIN CONTAINER -->
-        <div class="toolbar toolbar-edit">
+        <div class="toolbar toolbar-edit"  >
             <!-- Font size -->
             <button class="toolbar-btn" title="Font size">
                 <i class="bi bi-type"></i>
