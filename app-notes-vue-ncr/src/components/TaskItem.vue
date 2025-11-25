@@ -2,6 +2,11 @@
 import { useNotesStore } from '../stores/storenotes';
 import { computed } from 'vue';
 import { ref } from 'vue';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import { FloatLabel } from 'primevue';
+import DatePicker from 'primevue/datepicker';
+
 
 const props = defineProps({
     taskId: { type: [String, Number], required: true }
@@ -24,9 +29,9 @@ function onFocusOut() {
     isActive.value = false
 }
 
-function updateLastEdited() {
-    notesStore.notes[notesStore.activeNote].last_edited = new Date();
-}
+const visible = ref(false)
+
+const taskReminder = computed (() => notesStore.setReminderDateToTask(props.taskId))
 
 </script>
 
@@ -39,7 +44,8 @@ function updateLastEdited() {
         <div class="task-row" :class="{ active: isActive }">
             <div class="task-content">
                 <div class="task-row-top">
-                    <input type="checkbox" :data-task-id="task.id" v-bind:checked="task.completed" v-model="task.completed" @click="updateLastEdited()">
+                    <input type="checkbox" :data-task-id="task.id" v-bind:checked="task.completed"
+                        v-model="task.completed" @click="notesStore.updateLastEdited()">
                     <span class="task-title">{{ task.description }}</span>
                 </div>
                 <div class="task-row-bottom">
@@ -47,12 +53,39 @@ function updateLastEdited() {
                         <span class="task-deadline">
                             <i class="bi bi-flag"></i> + Add a Deadline
                         </span>
-                        <span class="task-time">
-                            <i class="bi bi-alarm"></i> + Add a timer
-                        </span>
+
+                        <!-- ADD REMINDER HERE -->
+                        <button id="task reminder" class="task-time" v-if="task.reminderDate != null">
+                            <i class="bi bi-alarm"></i> {{ taskReminder }}
+                        </button>
+
+                        <!-- REMINDER END HERE -->
+
+                        <button class="task-time" @click="visible = true" v-if="task.reminderDate == null">
+                            <i class="bi bi-alarm"></i> + Add reminder
+                        </button>
+
+                        <!-- DIALOG 1, SET DATE -->
+
+                        <Dialog v-model:visible="visible" modal header="Set a reminder date"
+                            :style="{ width: '25rem' }">
+                            <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                                <label for="date" class="font-semibold w-24">Date</label>
+                                <DatePicker id="datepicker-24h" v-model="datetime24h" showTime hourFormat="24" fluid />
+                            </FloatLabel>
+
+
+                            <div class="flex justify-end gap-2" style="margin-left: 90px">
+                                <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
+                                    style="margin-right: 20px"></Button>
+                                <Button type="button" label="Save"
+                                    @click="visible = false, notesStore.addReminderToTask(taskId, datetime24h), notesStore.updateLastEdited()"></Button>
+                            </div>
+                        </Dialog>
+
                     </div>
                     <div class="task-row-actions">
-                        <button class="task-btn" title="Temporizador" @mousedown.prevent="onFocusIn()" tabindex="-1">
+                        <button class="task-btn" title="Temporizador" @click="visible = true" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-stopwatch"></i>
                         </button>
                         <button class="task-btn" title="Flag" @mousedown.prevent="onFocusIn()" tabindex="-1">

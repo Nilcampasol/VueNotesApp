@@ -2,6 +2,11 @@
 import { useNotesStore } from '../stores/storenotes';
 import TaskItem from './TaskItem.vue';
 import { computed } from 'vue'
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import { FloatLabel } from 'primevue';
+import InputText from 'primevue/inputtext';
+import { ref } from 'vue';
 
 const notesStore = useNotesStore()
 
@@ -14,6 +19,7 @@ const last_edited_time = computed(() => {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
 })
 
+const visible = ref(false)
 
 </script>
 
@@ -194,9 +200,11 @@ const last_edited_time = computed(() => {
             <i class="bi bi-journal-medical editor-note-icon"></i>
             <span class="editor-title">NoteBook-{{ note.id }}</span>
             <div class="editor-label">
-                <span v-for="label in note.labels" class="meta-label" :class="'label-' + label.toLowerCase()" ><i class="bi bi-tag-fill"></i>{{ label }}</span>
+                <span v-for="label in note.labels" class="meta-label" :class="'label-' + label.toLowerCase()"><i
+                        class="bi bi-tag-fill"></i>{{ label }}</span>
             </div>
-            <span class="editor-date">Last Edited: <span style="letter-spacing:0.5px">{{ last_edited_time }}</span ></span>
+            <span class="editor-date">Last Edited: <span style="letter-spacing:0.5px">{{
+                    last_edited_time}}</span></span>
         </div>
         <div class="editor-container" v-if="notesStore.activeNote"><a>
             </a>
@@ -213,11 +221,25 @@ const last_edited_time = computed(() => {
                 <TaskItem v-for="task in Object.values(note?.tasks || {})" :key="task.id" :task-id="task.id" />
             </div>
             <div class="add-task-row">
-                <button class="add-task-btn" @click="notesStore.newTask()">
+                <button class="add-task-btn" @click="visible = true">
                     <i class="bi bi-plus"></i> Add Task
                 </button>
+
+                <Dialog v-model:visible="visible" modal header="Add New Task" :style="{ width: '25rem' }">
+                    <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                        <label for="taskName" class="font-semibold w-24">Name</label>
+                        <InputText type="text" v-model="taskname" fluid/>
+                    </FloatLabel>
+
+                    <div class="flex justify-end gap-2" style="margin-left: 90px">
+                        <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
+                            style="margin-right: 20px"></Button>
+                        <Button type="button" label="Save" @click="visible = false, notesStore.newTask(taskname)"></Button>
+                    </div>
+                </Dialog>
+
             </div>
-            <div class="editor-images" >
+            <div class="editor-images">
                 <img v-for="images in note.img" :src="images" alt="Imagen de ejemplo" style="margin-bottom: 50px;">
             </div>
         </div>
@@ -225,8 +247,7 @@ const last_edited_time = computed(() => {
 </template>
 
 <style scoped>
-
-.editor-images{
+.editor-images {
     margin-bottom: 50px;
 }
 

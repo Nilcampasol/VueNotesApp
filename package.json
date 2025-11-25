@@ -5,6 +5,8 @@
   "dependencies": {
     "@primeuix/themes": "^1.2.5",
     "@primevue/themes": "^4.4.1",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "pinia": "^3.0.4",
     "primevue": "^4.4.1"
   }

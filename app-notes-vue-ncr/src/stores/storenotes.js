@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { format } from 'date-fns-tz'
 
 export const useNotesStore = defineStore('notes', {
     state: () => ({
@@ -15,9 +16,9 @@ export const useNotesStore = defineStore('notes', {
                     "1": "http://.......com"
                 },
                 tasks: {
-                    "1": { id: 1, description: "Review session notes", completed: true, timer: true },
-                    "2": { id: 2, description: "Share with team", completed: true, timer: false },
-                    "3": { id: 3, description: "Schedule follow-up meeting", completed: false, timer: false },
+                    "1": { id: 1, description: "Review session notes", completed: true, timer: true, reminderDate: new Date() },
+                    "2": { id: 2, description: "Share with team", completed: true, timer: false, reminderDate: null },
+                    "3": { id: 3, description: "Schedule follow-up meeting", completed: false, timer: false, reminderDate: null },
                 },
                 img: [
                     "https://images.unsplash.com/photo-1762088776943-28a9fbadcec4",
@@ -36,9 +37,9 @@ export const useNotesStore = defineStore('notes', {
                     "2": "http://.......es"
                 },
                 tasks: {
-                    "1": { id: 1, description: "Create flyer", completed: false, timer: false },
-                    "2": { id: 2, description: "Contact local shop owners", completed: false, timer: false },
-                    "3": { id: 3, description: "Organize event", completed: false, timer: false },
+                    "1": { id: 1, description: "Create flyer", completed: false, timer: false, reminderDate: null },
+                    "2": { id: 2, description: "Contact local shop owners", completed: false, timer: false, reminderDate: null },
+                    "3": { id: 3, description: "Organize event", completed: false, timer: false, reminderDate: null },
                 },
                 img: [
                     "https://bihomes.es/app/uploads/2022/10/diseno-interiores-salon-casa.jpg",
@@ -70,9 +71,9 @@ export const useNotesStore = defineStore('notes', {
                     "1": "http://.......com"
                 },
                 tasks: {
-                    "1": { id: 1, description: "Read article", completed: true, timer: true },
-                    "2": { id: 2, description: "Apply one tip", completed: true, timer: true },
-                    "3": { id: 3, description: "Share feedback", completed: false, timer: true },
+                    "1": { id: 1, description: "Read article", completed: true, timer: true, reminderDate: null },
+                    "2": { id: 2, description: "Apply one tip", completed: true, timer: true, reminderDate: null },
+                    "3": { id: 3, description: "Share feedback", completed: false, timer: true, reminderDate: null },
                 },
                 img: [
                     "https://images.unsplash.com/photo-1762088776943-28a9fbadcec4",
@@ -91,9 +92,9 @@ export const useNotesStore = defineStore('notes', {
                     "2": "http://.......es"
                 },
                 tasks: {
-                    "1": { id: 1, description: "Send thank you email", completed: false, timer: false },
-                    "2": { id: 2, description: "Update CRM", completed: false, timer: false },
-                    "3": { id: 3, description: "Prepare proposal", completed: false, timer: false },
+                    "1": { id: 1, description: "Send thank you email", completed: false, timer: false, reminderDate: null },
+                    "2": { id: 2, description: "Update CRM", completed: false, timer: false, reminderDate: null },
+                    "3": { id: 3, description: "Prepare proposal", completed: false, timer: false, reminderDate: null },
 
                 },
                 img: [
@@ -110,9 +111,9 @@ export const useNotesStore = defineStore('notes', {
                 links: {
                 },
                 tasks: {
-                    "1": { id: 1, description: "Finalize roadmap", completed: false, timer: false },
-                    "2": { id: 2, description: "Assign tasks", completed: false, timer: false },
-                    "3": { id: 3, description: "Schedule kickoff meeting", completed: false, timer: false }
+                    "1": { id: 1, description: "Finalize roadmap", completed: false, timer: false, reminderDate: null },
+                    "2": { id: 2, description: "Assign tasks", completed: false, timer: false, reminderDate: null },
+                    "3": { id: 3, description: "Schedule kickoff meeting", completed: false, timer: false, reminderDate: null },
                 },
                 img: [
                     "https://images.unsplash.com/photo-1759818319027-dc631ed9732b",
@@ -147,14 +148,29 @@ export const useNotesStore = defineStore('notes', {
                 return String(last_edited.getHours()).padStart(2, "0") + ":" + String(last_edited.getMinutes()).padStart(2, "0")
             }
         },
-        newTask() {
+        updateLastEdited() {
+            this.notes[this.activeNote].last_edited = new Date();
+        },
+        newTask(name) {
             const note = this.notes[this.activeNote];
             const newId = Object.keys(note.tasks || {}).length + 1;
-            note.tasks[newId] = { id: newId, description: "New Task", completed: false, timer: false };
+            note.tasks[newId] = { id: newId, description: name, completed: false, timer: false, reminderDate: null };
         },
-        // newListNoteItem(){
+        addReminderToTask(task, date){
+            const note = this.notes[this.activeNote];
+            note.tasks[task].reminderDate = date;
+            note.tasks[task].timer = true;
+        },
 
-        // }
+        setReminderDateToTask(task){
+            /*FORMAT = EX. 12 Nov, 8:01 AM*/
+            const date = this.notes[this.activeNote].tasks[task].reminderDate;
+            return format(date, "d LLL, h:mm a", { timeZone: 'Europe/Madrid' });
+        },
+        newListNoteItem(newTitle, newSubtitle, newContent, newLabels){
+            const newId = (this.notesArray).length + 1;
+            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: {}, tasks: {}, img: [], last_edited: new Date() };
+        }
     },
 },
 )
