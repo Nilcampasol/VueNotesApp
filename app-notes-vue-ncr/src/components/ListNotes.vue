@@ -82,6 +82,11 @@ const labels = [
       </div>
 
       <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+        <label for="link" class="font-semibold w-24">Link</label>
+        <InputText id="link" class="flex-auto" fluid autocomplete="off" v-model="newLink"/>
+      </FloatLabel>
+
+      <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
         <label for="image" class="font-semibold w-24">Image</label>
         <InputText id="image" class="flex-auto" fluid autocomplete="off" v-model="newImage"/>
       </FloatLabel>
@@ -94,7 +99,7 @@ const labels = [
           @click="visible = false"
           style="margin-right: 20px"
         ></Button>
-        <Button type="button" label="Save" @click="visible = false, notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels, newImage)"></Button>
+        <Button type="button" label="Save" @click="visible = false, notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels, newLink, newImage)"></Button>
       </div>
     </Dialog>
 

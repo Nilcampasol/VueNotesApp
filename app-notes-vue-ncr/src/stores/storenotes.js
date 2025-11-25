@@ -168,9 +168,9 @@ export const useNotesStore = defineStore('notes', {
             const date = this.notes[this.activeNote].tasks[task].reminderDate;
             return format(date, "d LLL, h:mm a", { timeZone: 'Europe/Madrid' });
         },
-        newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newImage){
+        newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newLink, newImage){
             const newId = (this.notesArray).length + this.deletedCount + 1;
-            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: {}, tasks: {}, img: [], last_edited: new Date(), img: [newImage] };
+            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: newLink, tasks: {}, last_edited: new Date(), img: [newImage] };
         },
         deleteActiveNote(){
             if (!this.activeNote) return
@@ -178,6 +178,11 @@ export const useNotesStore = defineStore('notes', {
             delete this.notes[key];
             this.activeNote = null;
             this.deletedCount++;
+        },
+        deleteTask(taskId){
+            if (!this.activeNote) return
+            const key = String(taskId)
+            delete this.notes[this.activeNote].tasks[key];
         }
 
     },

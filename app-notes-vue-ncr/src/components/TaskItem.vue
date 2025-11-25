@@ -97,7 +97,7 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
                         <button class="task-btn" title="Editar" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="task-btn" title="Eliminar" @mousedown.prevent="onFocusIn()" tabindex="-1">
+                        <button class="task-btn" title="Eliminar" @click="notesStore.deleteTask(taskId)" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
