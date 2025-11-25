@@ -21,6 +21,8 @@ const last_edited_time = computed(() => {
 
 const visible = ref(false)
 
+const editNoteDetailsPopupVisible = ref(false)
+
 </script>
 
 <template>
@@ -72,9 +74,27 @@ const visible = ref(false)
                 <button class="toolbar-btn" title="Copy">
                     <i class="bi bi-files"></i>
                 </button>
-                <button class="toolbar-btn" title="Copy Plus">
-                    <i class="bi bi-file-plus"></i>
+                <button class="toolbar-btn" title="Edit" @click="editNoteDetailsPopupVisible = true">
+                    <i class="bi bi-pen"></i>
                 </button>
+
+                <Dialog v-model:visible="editNoteDetailsPopupVisible" modal header="Edit note" :style="{ width: '25rem' }">
+                    <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                        <label for="title" class="font-semibold w-24">Title</label>
+                        <InputText type="text" v-model="note.title" fluid/>
+                    </FloatLabel>
+
+                    <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                        <label for="subtitle" class="font-semibold w-24">Subtitle</label>
+                        <InputText type="text" v-model="note.subtitle" fluid/>
+                    </FloatLabel>
+
+                    <div class="flex justify-end gap-2" style="margin-left: 90px">
+                        <Button type="button" label="Cancel" severity="secondary" @click="editNoteDetailsPopupVisible = false"
+                            style="margin-right: 20px"></Button>
+                        <Button type="button" label="Save" @click="editNoteDetailsPopupVisible = false"></Button>
+                    </div>
+                </Dialog>
             </div>
             <div class="toolbar-sep"></div>
             <div class="toolbar-group">

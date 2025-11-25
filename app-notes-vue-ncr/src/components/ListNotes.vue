@@ -60,11 +60,7 @@ const labels = [
         <label for="subtitle" class="font-semibold w-24">Subtitle</label>
         <InputText id="subtitle" class="flex-auto" fluid autocomplete="off" v-model="newSubtitle"/>
       </FloatLabel>
-
-      <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
-        <label for="content" class="font-semibold w-24">Content</label>
-        <InputText id="content" class="flex-auto" fluid autocomplete="off" v-model="newContent"/>
-      </FloatLabel>
+      
 
       <div class="flex items-center gap-4 mb-4 ml-4">
         <MultiSelect
@@ -83,7 +79,7 @@ const labels = [
 
       <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
         <label for="link" class="font-semibold w-24">Link</label>
-        <InputText id="link" class="flex-auto" fluid autocomplete="off" v-model="newLink"/>
+        <InputText id="link" class="flex-auto" fluid autocomplete="off" v-model="newLink" disabled/>
       </FloatLabel>
 
       <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">

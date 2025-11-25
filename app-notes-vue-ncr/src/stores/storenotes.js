@@ -12,7 +12,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Personal", "Work"],
                 title: "Brainstorming Session Highlight on all the things i have no idea what i'm writing, this is a long title that should get truncated",
                 subtitle: "Capture your team's best ideas here, well if you want to do it.",
-                content: "This note contains a summary of our latest brainstorming session, focusing on creative solutions and new approaches.",
                 links: {
                     "1": "http://.......com"
                 },
@@ -32,7 +31,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Work"],
                 title: "Helping a local business",
                 subtitle: "Amet minim mollit non deserunt iluminated his shop poorly.",
-                content: "Discussed ways to support local shops, including marketing tips and community engagement.",
                 links: {
                     "1": "https://stackoverflow.com/questions/70733673/vuejs-how-to-bind-href-within-v-for",
                     "2": "http://.......es"
@@ -52,7 +50,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Team", "Work", "Personal",],
                 title: "Weekly Team Update",
                 subtitle: "Document this week's accomplishments, challenges, and next steps. I don't think you want to read what we hadn't done due to time constraints.",
-                content: "This week, the team completed the initial project phase and outlined goals for the upcoming sprint.",
                 links: {
                 },
                 tasks: {
@@ -67,7 +64,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Ideas", "Work"],
                 title: "Streamline Your Workflow with These Tips",
                 subtitle: "In today's fast-paced environment we are going to do nothing :/",
-                content: "Learn how to streamline your workflow, prioritize tasks, and collaborate effectively with your team.",
                 links: {
                     "1": "http://.......com"
                 },
@@ -87,7 +83,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Project"],
                 title: "Client Meeting Notes",
                 subtitle: "Keep a record of all client interactions in one place so you can easily refer back to them.",
-                content: "Notes from the latest client meeting, including action items and follow-up tasks.",
                 links: {
                     "1": "https://stackoverflow.com/questions/70733673/vuejs-how-to-bind-href-within-v-for",
                     "2": "http://.......es"
@@ -108,7 +103,6 @@ export const useNotesStore = defineStore('notes', {
                 labels: ["Update", "Work", "Personal",],
                 title: "Project Kickoff Plan",
                 subtitle: "Lay out the initial roadmap for your new project.",
-                content: "Outlined the project scope, key milestones, and assigned roles for the kickoff.",
                 links: {
                 },
                 tasks: {
@@ -175,9 +169,9 @@ export const useNotesStore = defineStore('notes', {
             return format(date, "d LLL, h:mm a", { timeZone: 'Europe/Madrid' });
         },
 
-        newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newLink, newImage){
+        newListNoteItem(newTitle, newSubtitle,  newLabels, newLink, newImage){
             const newId = (this.notesArray).length + this.deletedCount + 1;
-            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: newLink, tasks: {}, last_edited: new Date(), img: [newImage] };
+            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, links: {"1" : newLink}, tasks: {}, last_edited: new Date(), img: [newImage] };
         },
 
         deleteActiveNote(){
