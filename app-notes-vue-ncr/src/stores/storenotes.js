@@ -132,6 +132,9 @@ export const useNotesStore = defineStore('notes', {
         },
     },
     actions: {
+        
+        
+        
         setNoteTime(last_edited) {
             const now = new Date();
             const diffMs = now - last_edited;
@@ -149,14 +152,17 @@ export const useNotesStore = defineStore('notes', {
                 return String(last_edited.getHours()).padStart(2, "0") + ":" + String(last_edited.getMinutes()).padStart(2, "0")
             }
         },
+
         updateLastEdited() {
             this.notes[this.activeNote].last_edited = new Date();
         },
+
         newTask(name) {
             const note = this.notes[this.activeNote];
             const newId = Object.keys(note.tasks || {}).length + 1;
             note.tasks[newId] = { id: newId, description: name, completed: false, timer: false, reminderDate: null };
         },
+
         addReminderToTask(task, date){
             const note = this.notes[this.activeNote];
             note.tasks[task].reminderDate = date;
@@ -168,10 +174,12 @@ export const useNotesStore = defineStore('notes', {
             const date = this.notes[this.activeNote].tasks[task].reminderDate;
             return format(date, "d LLL, h:mm a", { timeZone: 'Europe/Madrid' });
         },
+
         newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newLink, newImage){
             const newId = (this.notesArray).length + this.deletedCount + 1;
             this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: newLink, tasks: {}, last_edited: new Date(), img: [newImage] };
         },
+
         deleteActiveNote(){
             if (!this.activeNote) return
             const key = String(this.activeNote);
@@ -179,11 +187,13 @@ export const useNotesStore = defineStore('notes', {
             this.activeNote = null;
             this.deletedCount++;
         },
+
         deleteTask(taskId){
             if (!this.activeNote) return
             const key = String(taskId)
             delete this.notes[this.activeNote].tasks[key];
-        }
+        },
+
 
     },
 },

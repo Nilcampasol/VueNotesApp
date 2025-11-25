@@ -6,6 +6,8 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import { FloatLabel } from 'primevue';
 import DatePicker from 'primevue/datepicker';
+import InputText from 'primevue/inputtext';
+
 
 
 const props = defineProps({
@@ -29,7 +31,10 @@ function onFocusOut() {
     isActive.value = false
 }
 
-const visible = ref(false)
+const SetReminderPopupVisible = ref(false)
+
+const ModifyTaskNamePopupVisible = ref(false)
+
 
 const taskReminder = computed (() => notesStore.setReminderDateToTask(props.taskId))
 
@@ -61,13 +66,13 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
 
                         <!-- REMINDER END HERE -->
 
-                        <button class="task-time" @click="visible = true" v-if="task.reminderDate == null">
+                        <button class="task-time" @click="SetReminderPopupVisible = true" v-if="task.reminderDate == null">
                             <i class="bi bi-alarm"></i> + Add reminder
                         </button>
 
                         <!-- DIALOG 1, SET DATE -->
 
-                        <Dialog v-model:visible="visible" modal header="Set a reminder date"
+                        <Dialog v-model:visible="SetReminderPopupVisible" modal header="Set a reminder date"
                             :style="{ width: '25rem' }">
                             <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
                                 <label for="date" class="font-semibold w-24">Date</label>
@@ -76,16 +81,16 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
 
 
                             <div class="flex justify-end gap-2" style="margin-left: 90px">
-                                <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
+                                <Button type="button" label="Cancel" severity="secondary" @click="SetReminderPopupVisible = false"
                                     style="margin-right: 20px"></Button>
                                 <Button type="button" label="Save"
-                                    @click="visible = false, notesStore.addReminderToTask(taskId, datetime24h), notesStore.updateLastEdited()"></Button>
+                                    @click="SetReminderPopupVisible = false, notesStore.addReminderToTask(taskId, datetime24h), notesStore.updateLastEdited()"></Button>
                             </div>
                         </Dialog>
 
                     </div>
                     <div class="task-row-actions">
-                        <button class="task-btn" title="Temporizador" @click="visible = true" @mousedown.prevent="onFocusIn()" tabindex="-1">
+                        <button class="task-btn" title="Temporizador" @click="SetReminderPopupVisible = true" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-stopwatch"></i>
                         </button>
                         <button class="task-btn" title="Flag" @mousedown.prevent="onFocusIn()" tabindex="-1">
@@ -94,9 +99,23 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
                         <button class="task-btn" title="Breakpoint" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-flag-fill"></i>
                         </button>
-                        <button class="task-btn" title="Editar" @mousedown.prevent="onFocusIn()" tabindex="-1">
+                        <button class="task-btn" title="Editar" @click="ModifyTaskNamePopupVisible = true" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-pencil"></i>
                         </button>
+
+                        <Dialog v-model:visible="ModifyTaskNamePopupVisible" modal header="Add New Task" :style="{ width: '25rem' }">
+                            <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                                <label for="taskName" class="font-semibold w-24">Name</label>
+                                <InputText type="text" v-model="task.description" fluid/>
+                            </FloatLabel>
+
+                            <div class="flex justify-end gap-2" style="margin-left: 90px">
+                                <Button type="button" label="Cancel" severity="secondary" @click="ModifyTaskNamePopupVisible = false"
+                                    style="margin-right: 20px"></Button>
+                                <Button type="button" label="Save" @click="ModifyTaskNamePopupVisible = false"></Button>
+                            </div>
+                        </Dialog>
+
                         <button class="task-btn" title="Eliminar" @click="notesStore.deleteTask(taskId)" @mousedown.prevent="onFocusIn()" tabindex="-1">
                             <i class="bi bi-trash"></i>
                         </button>
