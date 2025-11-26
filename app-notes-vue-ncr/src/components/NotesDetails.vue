@@ -19,7 +19,9 @@ const last_edited_time = computed(() => {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
 })
 
-const visible = ref(false)
+const visible = ref(false);
+
+const activateEditNotePopupActive = ref(false);
 
 </script>
 
@@ -44,9 +46,9 @@ const visible = ref(false)
                     <i class="bi bi-files"></i>
                     Copy
                 </button>
-                <button class="toolbar-btn">
-                    <i class="bi bi-file-plus"></i>
-                    Copy Plus
+                <button class="toolbar-btn" @click="activateEditNotePopupActive = true">
+                    <i class="bi bi-pencil"></i>
+                    Edit
                 </button>
                 <button class="toolbar-btn">
                     <i class="bi bi-box-arrow-up"></i>
@@ -72,9 +74,28 @@ const visible = ref(false)
                 <button class="toolbar-btn" title="Copy">
                     <i class="bi bi-files"></i>
                 </button>
-                <button class="toolbar-btn" title="Copy Plus">
-                    <i class="bi bi-file-plus"></i>
+                <button class="toolbar-btn" title="Edit" @click="activateEditNotePopupActive = true">
+                    <i class="bi bi-pencil" ></i>
                 </button>
+
+                <Dialog v-model:visible="activateEditNotePopupActive" modal header="Edit Note" :style="{ width: '25rem' }">
+                    <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                        <label for="taskName" class="font-semibold w-24">Title</label>
+                        <InputText type="title" v-model="note.title" fluid/>
+                    </FloatLabel>
+
+                    <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
+                        <label for="taskName" class="font-semibold w-24">Subtitle</label>
+                        <InputText type="subtitle" v-model="note.subtitle" fluid/>
+                    </FloatLabel>
+
+                    <div class="flex justify-end gap-2" style="margin-left: 90px">
+                        <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
+                            style="margin-right: 20px"></Button>
+                        <Button type="button" label="Save" @click="activateEditNotePopupActive = false"></Button>
+                    </div>
+                </Dialog>
+
             </div>
             <div class="toolbar-sep"></div>
             <div class="toolbar-group">
