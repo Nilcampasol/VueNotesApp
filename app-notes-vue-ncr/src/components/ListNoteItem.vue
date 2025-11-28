@@ -1,6 +1,6 @@
 <script setup>
 import { useNotesStore } from '../stores/storenotes';
-import { computed, watch } from 'vue';
+import { computed/*, watch */} from 'vue';
 
 const notesStore = useNotesStore()
 
@@ -8,7 +8,7 @@ const props = defineProps({
     noteId: { type: [String, Number], required: true }
 })
 
-watch(() => props.noteId, val => console.log('noteId changed:', val));
+//watch(() => props.noteId, val => console.log('noteId changed:', val));
 
 const note = computed(() => {
     if (!props.noteId) return null;

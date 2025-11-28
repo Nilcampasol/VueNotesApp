@@ -92,7 +92,7 @@ const activateEditNotePopupActive = ref(false);
                     <div class="flex justify-end gap-2" style="margin-left: 90px">
                         <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
                             style="margin-right: 20px"></Button>
-                        <Button type="button" label="Save" @click="activateEditNotePopupActive = false"></Button>
+                        <Button type="button" label="Save" @click="activateEditNotePopupActive = false, notesStore.postNote(note.id)"></Button>
                     </div>
                 </Dialog>
 
