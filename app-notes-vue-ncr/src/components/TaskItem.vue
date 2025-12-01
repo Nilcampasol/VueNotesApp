@@ -16,6 +16,8 @@ const props = defineProps({
 
 const notesStore = useNotesStore()
 
+const note = computed (() => notesStore.notes[notesStore.activeNote]);
+
 const task = computed(() => {
     const noteKey = notesStore.activeNote != null ? String(notesStore.activeNote) : null
     return notesStore.notes[noteKey].tasks[props.taskId]
@@ -50,7 +52,7 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
             <div class="task-content">
                 <div class="task-row-top">
                     <input type="checkbox" :data-task-id="task.id" v-bind:checked="task.completed"
-                        v-model="task.completed" @click="notesStore.updateLastEdited()">
+                        v-model="task.completed" @click="notesStore.updateLastEdited()" @change="notesStore.postNote(note.id)">
                     <span class="task-title">{{ task.description }}</span>
                 </div>
                 <div class="task-row-bottom">
@@ -84,7 +86,7 @@ const taskReminder = computed (() => notesStore.setReminderDateToTask(props.task
                                 <Button type="button" label="Cancel" severity="secondary" @click="SetReminderPopupVisible = false"
                                     style="margin-right: 20px"></Button>
                                 <Button type="button" label="Save"
-                                    @click="SetReminderPopupVisible = false, notesStore.addReminderToTask(taskId, datetime24h), notesStore.updateLastEdited()"></Button>
+                                    @click="SetReminderPopupVisible = false, notesStore.addReminderToTask(taskId, datetime24h), notesStore.updateLastEdited(), notesStore.postNote(note.id)"></Button>
                             </div>
                         </Dialog>
 

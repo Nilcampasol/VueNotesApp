@@ -264,7 +264,19 @@ export const useNotesStore = defineStore('notes', {
 
         newListNoteItem(newTitle, newSubtitle, newContent, newLabels, newLink, newImage) {
             const newId = (this.notesArray).length + this.deletedCount + 1;
-            this.notes[newId] = { id: Number(newId), labels: newLabels || [], title: newTitle, subtitle: newSubtitle, content: newContent, links: newLink, tasks: {}, last_edited: new Date(), img: [newImage] };
+            this.notes[String(newId)] = { 
+                id: String(newId), 
+                labels: newLabels , 
+                title: newTitle ?? '', 
+                subtitle: newSubtitle ?? '', 
+                content: newContent ?? '', 
+                links: typeof newLink === 'string' ? {'1': newLink} : (newLink || {}), 
+                tasks: {}, 
+                last_edited: new Date(), 
+                img: [newImage] 
+            };
+
+            return newId
         },
 
         deleteActiveNote() {

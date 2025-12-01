@@ -102,7 +102,7 @@ const activateEditNotePopupActive = ref(false);
                 <button class="toolbar-btn" title="Export">
                     <i class="bi bi-box-arrow-up"></i>
                 </button>
-                <button class="toolbar-btn" title="Print" onClick="print()">
+                <button class="toolbar-btn" title="Print" onclick="print();">
                     <i class="bi bi-printer"></i>
                 </button>
 
@@ -231,6 +231,7 @@ const activateEditNotePopupActive = ref(false);
             <div class="editor-main">
                 <h1>{{ note.title }}</h1>
                 <p>{{ note.subtitle }}</p>
+                <p>{{ note.content }}</p>
                 <div v-for="link in note.links">
                     <a class="editor-link" :href="`${link}`" target="blank">
                         {{ link }}
@@ -254,7 +255,7 @@ const activateEditNotePopupActive = ref(false);
                     <div class="flex justify-end gap-2" style="margin-left: 90px">
                         <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
                             style="margin-right: 20px"></Button>
-                        <Button type="button" label="Save" @click="visible = false, notesStore.newTask(taskname)"></Button>
+                        <Button type="button" label="Save" @click="visible = false, notesStore.newTask(taskname), notesStore.postNote(note.id)"></Button>
                     </div>
                 </Dialog>
 
