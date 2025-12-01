@@ -95,7 +95,7 @@ const labels = [
           @click="visible = false"
           style="margin-right: 20px"
         ></Button>
-        <Button type="button" label="Save" @click="visible = false, notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels, newLink, newImage)"></Button>
+        <Button type="button" label="Save" @click="visible = false, notesStore.postNote(notesStore.newListNoteItem(newTitle, newSubtitle, newContent, selectedLabels, newLink, newImage))"></Button>
       </div>
     </Dialog>
 

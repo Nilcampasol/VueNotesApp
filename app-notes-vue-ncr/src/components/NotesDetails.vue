@@ -19,9 +19,9 @@ const last_edited_time = computed(() => {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
 })
 
-const visible = ref(false)
+const visible = ref(false);
 
-const editNoteDetailsPopupVisible = ref(false)
+const activateEditNotePopupActive = ref(false);
 
 </script>
 
@@ -46,9 +46,9 @@ const editNoteDetailsPopupVisible = ref(false)
                     <i class="bi bi-files"></i>
                     Copy
                 </button>
-                <button class="toolbar-btn">
-                    <i class="bi bi-file-plus"></i>
-                    Copy Plus
+                <button class="toolbar-btn" @click="activateEditNotePopupActive = true">
+                    <i class="bi bi-pencil"></i>
+                    Edit
                 </button>
                 <button class="toolbar-btn">
                     <i class="bi bi-box-arrow-up"></i>
@@ -74,34 +74,35 @@ const editNoteDetailsPopupVisible = ref(false)
                 <button class="toolbar-btn" title="Copy">
                     <i class="bi bi-files"></i>
                 </button>
-                <button class="toolbar-btn" title="Edit" @click="editNoteDetailsPopupVisible = true">
-                    <i class="bi bi-pen"></i>
+                <button class="toolbar-btn" title="Edit" @click="activateEditNotePopupActive = true">
+                    <i class="bi bi-pencil" ></i>
                 </button>
 
-                <Dialog v-model:visible="editNoteDetailsPopupVisible" modal header="Edit note" :style="{ width: '25rem' }">
+                <Dialog v-model:visible="activateEditNotePopupActive" modal header="Edit Note" :style="{ width: '25rem' }">
                     <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
-                        <label for="title" class="font-semibold w-24">Title</label>
-                        <InputText type="text" v-model="note.title" fluid/>
+                        <label for="taskName" class="font-semibold w-24">Title</label>
+                        <InputText type="title" v-model="note.title" fluid/>
                     </FloatLabel>
 
                     <FloatLabel variant="on" class="flex items-center gap-4 mb-4 mt-1">
-                        <label for="subtitle" class="font-semibold w-24">Subtitle</label>
-                        <InputText type="text" v-model="note.subtitle" fluid/>
+                        <label for="taskName" class="font-semibold w-24">Subtitle</label>
+                        <InputText type="subtitle" v-model="note.subtitle" fluid/>
                     </FloatLabel>
 
                     <div class="flex justify-end gap-2" style="margin-left: 90px">
-                        <Button type="button" label="Cancel" severity="secondary" @click="editNoteDetailsPopupVisible = false"
+                        <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
                             style="margin-right: 20px"></Button>
-                        <Button type="button" label="Save" @click="editNoteDetailsPopupVisible = false"></Button>
+                        <Button type="button" label="Save" @click="activateEditNotePopupActive = false, notesStore.postNote(note.id)"></Button>
                     </div>
                 </Dialog>
+
             </div>
             <div class="toolbar-sep"></div>
             <div class="toolbar-group">
                 <button class="toolbar-btn" title="Export">
                     <i class="bi bi-box-arrow-up"></i>
                 </button>
-                <button class="toolbar-btn" title="Print" onClick="print()">
+                <button class="toolbar-btn" title="Print" onclick="print();">
                     <i class="bi bi-printer"></i>
                 </button>
 
@@ -230,6 +231,7 @@ const editNoteDetailsPopupVisible = ref(false)
             <div class="editor-main">
                 <h1>{{ note.title }}</h1>
                 <p>{{ note.subtitle }}</p>
+                <p>{{ note.content }}</p>
                 <div v-for="link in note.links">
                     <a class="editor-link" :href="`${link}`" target="blank">
                         {{ link }}
@@ -253,7 +255,7 @@ const editNoteDetailsPopupVisible = ref(false)
                     <div class="flex justify-end gap-2" style="margin-left: 90px">
                         <Button type="button" label="Cancel" severity="secondary" @click="visible = false"
                             style="margin-right: 20px"></Button>
-                        <Button type="button" label="Save" @click="visible = false, notesStore.newTask(taskname)"></Button>
+                        <Button type="button" label="Save" @click="visible = false, notesStore.newTask(taskname), notesStore.postNote(note.id)"></Button>
                     </div>
                 </Dialog>
 

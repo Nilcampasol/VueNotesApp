@@ -1,6 +1,6 @@
 <script setup>
 import { useNotesStore } from '../stores/storenotes';
-import { computed, watch } from 'vue';
+import { computed/*, watch */} from 'vue';
 
 const notesStore = useNotesStore()
 
@@ -8,7 +8,7 @@ const props = defineProps({
     noteId: { type: [String, Number], required: true }
 })
 
-watch(() => props.noteId, val => console.log('noteId changed:', val));
+//watch(() => props.noteId, val => console.log('noteId changed:', val));
 
 const note = computed(() => {
     if (!props.noteId) return null;
@@ -16,11 +16,13 @@ const note = computed(() => {
     return notesStore.notes?.[key] ?? null;
 });
 
+const isActive = computed (() => String(notesStore.activeNote) === String(props.noteId));
+
 const showNote = computed(() => {
   if (!note.value) return false // if note == null
   if (!notesStore.activeReminderFilter) return true // if filter it's not active = true
   return note.value.tasks && Object.values(note.value.tasks).some(t => t.timer) // if filter is active then = filter 
-})
+});
 
 const tasksDone = computed(() => Object.values(note.value.tasks).filter(t => t.completed).length);
 const tasksNum = computed(() => Object.values(note.value.tasks).length);
@@ -32,7 +34,7 @@ const noteTime = computed(() => notesStore.setNoteTime(note.value.last_edited));
 </script>
 
 <template>
-    <div v-if="showNote" class="note-item listener-added" @click="notesStore.activeNote = note.id" :data-id="note.id">
+    <div v-if="showNote" :class="{ active : isActive} " class="note-item listener-added" @click="notesStore.activeNote = note.id" :data-id="note.id">
         <div class="note-content">
             <div class="note-title" :title="note.title">
                 {{ note.title }}

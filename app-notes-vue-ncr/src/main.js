@@ -5,6 +5,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import App from './App.vue'
 import Noir from './presets/Noir.js';
+import { useNotesStore } from './stores/storenotes.js';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -20,4 +21,8 @@ app.use(PrimeVue, {
         }
     }
 });
+
 app.mount('#app');
+
+const notesStore = useNotesStore();
+notesStore.fetchNotes();
